@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dominio
+namespace Dominio
 {
-    public class Archivo
+    public class Categorias
     {
-    }
+        public int Id { get; set; }
+        public string Categoria { get; set; }
+}
 }

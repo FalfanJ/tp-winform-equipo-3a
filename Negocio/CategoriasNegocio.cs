@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dominio
+namespace Negocio
 {
-    internal class Class2
+    public class CategoriasNegocio
     {
     }
 }

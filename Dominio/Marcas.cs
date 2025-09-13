@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dominio
+namespace Dominio
 {
-    internal class Articulo
+    public class Marcas
     {
-    }
+        public int Id { get; set; }
+        public string Marca { get; set; }
+}
 }
