@@ -3,10 +3,73 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using Dominio;
 
 namespace Negocio
 {
     public class MarcasNegocio
     {
+        private string connectionString = "server=.; database=CATALOGO_P3_DB; integrated security=true;";
+
+        // Listar todas las marcas
+        public List<Dominio.Marcas> Listar()
+        {
+            List<Dominio.Marcas> lista = new List<Dominio.Marcas>();
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                SqlCommand comando = new SqlCommand("SELECT Id, Descripcion FROM MARCAS", conexion);
+                conexion.Open();
+                SqlDataReader lector = comando.ExecuteReader();
+
+                while (lector.Read())
+                {
+                    Dominio.Marcas marca = new Dominio.Marcas
+                    {
+                        Id = (int)lector["Id"],
+                        Marca = (string)lector["Descripcion"]
+                    };
+                    lista.Add(marca);
+                }
+            }
+            return lista;
+        }
+
+        // Buscar marcas por nombre (contiene)
+        public List<Dominio.Marcas> Buscar(string criterio)
+        {
+            List<Dominio.Marcas> lista = new List<Dominio.Marcas>();
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                SqlCommand comando = new SqlCommand("SELECT Id, Descripcion FROM MARCAS WHERE Descripcion LIKE @criterio", conexion);
+                comando.Parameters.AddWithValue("@criterio", "%" + criterio + "%");
+                conexion.Open();
+                SqlDataReader lector = comando.ExecuteReader();
+
+                while (lector.Read())
+                {
+                    Dominio.Marcas marca = new Dominio.Marcas
+                    {
+                        Id = (int)lector["Id"],
+                        Marca = (string)lector["Descripcion"]
+                    };
+                    lista.Add(marca);
+                }
+            }
+            return lista;
+        }
+
+        // Agregar nueva marca
+        public void Agregar(Dominio.Marcas nueva)
+        {
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                SqlCommand comando = new SqlCommand("INSERT INTO MARCAS (Descripcion) VALUES (@Descripcion)", conexion);
+                comando.Parameters.AddWithValue("@Descripcion", nueva.Marca);
+                conexion.Open();
+                comando.ExecuteNonQuery();
+            }
+        }
+
     }
 }
