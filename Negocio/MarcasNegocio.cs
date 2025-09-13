@@ -70,6 +70,54 @@ namespace Negocio
                 comando.ExecuteNonQuery();
             }
         }
+        // Modificar marca existente
+        public void Modificar(Dominio.Marcas marca)
+        {
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                SqlCommand comando = new SqlCommand("UPDATE MARCAS SET Descripcion = @Descripcion WHERE Id = @Id", conexion);
+                comando.Parameters.AddWithValue("@Descripcion", marca.Marca);
+                comando.Parameters.AddWithValue("@Id", marca.Id);
+                conexion.Open();
+                comando.ExecuteNonQuery();
+            }
+        }
+
+        // Eliminar marca
+        public void Eliminar(int id)
+        {
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                SqlCommand comando = new SqlCommand("DELETE FROM MARCAS WHERE Id = @Id", conexion);
+                comando.Parameters.AddWithValue("@Id", id);
+                conexion.Open();
+                comando.ExecuteNonQuery();
+            }
+        }
+
+        // Ver detalle de una marca por Id
+        public Dominio.Marcas ObtenerPorId(int id)
+        {
+            Dominio.Marcas marca = null;
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                SqlCommand comando = new SqlCommand("SELECT Id, Descripcion FROM MARCAS WHERE Id = @Id", conexion);
+                comando.Parameters.AddWithValue("@Id", id);
+                conexion.Open();
+                SqlDataReader lector = comando.ExecuteReader();
+
+                if (lector.Read())
+                {
+                    marca = new Dominio.Marcas
+                    {
+                        Id = (int)lector["Id"],
+                        Marca = (string)lector["Descripcion"]
+                    };
+                }
+            }
+
+            return marca;
+        }
 
     }
 }
