@@ -1,210 +1,163 @@
 ﻿using Dominio;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Net.Configuration;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Negocio
 {
     public class CategoriasNegocio
     {
         // ---- Listar categorias
-        public List<Categorias> listar() {
-
-            List<Categorias>  lista = new List<Categorias>();
-
-                SqlConnection conexion = new SqlConnection();
-                SqlCommand comando = conexion.CreateCommand();
-                SqlDataReader lector;
-
-            try {
-
-                    
-                conexion.ConnectionString = "server=.; database=CATALOGO_P3_DB; integrated security=true;";
-                comando.CommandType = System.Data.CommandType.Text;
-                comando.CommandText = "Select Id, Categoria from CATEGORIAS ";
-                comando.Connection = conexion;
-
-                conexion.Open();
-                lector = comando.ExecuteReader();
-
-                // ---- En cada vuelta va a crear una nueva instancia de categoria y va a ir agregandolo a la lista
-                // ---- Si ya no hay mas categorias se termina el ciclo.
-                while (lector.Read()) {
-
-                    Categorias aux = new Categorias();
-                    aux.Id = lector.GetInt32(0);
-                    aux.Categoria= (string)lector["Categoria"];
-
-                    // ---- Agregamos la categoria a la lista
-                    lista.Add(aux);
-                }
-
-                conexion.Close();
-                return lista;
-            }
-            // ---- Si algo falla en la db devolvemos un error
-            catch(Exception ex) {
-
-                throw ex;
-            }
-        
-        }
-
-        // ---- Buscar Categoria por nombre de categoria
-        public List<Categorias> buscar(string nombre)
+        public List<Categorias> listar()
         {
             List<Categorias> lista = new List<Categorias>();
-
-            SqlConnection conexion = new SqlConnection();
-            SqlCommand comando = conexion.CreateCommand();
-            SqlDataReader lector;
+            AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                conexion.ConnectionString = "server=.; database=CATALOGO_P3_DB; integrated security=true;";
-                comando.CommandType = System.Data.CommandType.Text;
-                comando.CommandText = "SELECT Id, Categoria FROM CATEGORIAS WHERE Categoria LIKE @nombre";
-                comando.Parameters.AddWithValue("@nombre", "%" + nombre + "%"); 
-                comando.Connection = conexion;
+                datos.SetearConsulta("SELECT Id, Descripcion FROM CATEGORIAS");
+                datos.EjecutarLectura();
 
-                conexion.Open();
-                lector = comando.ExecuteReader();
-
-                while (lector.Read())
+                while (datos.Lector.Read())
                 {
                     Categorias aux = new Categorias();
-                    aux.Id = lector.GetInt32(0);
-                    aux.Categoria = (string)lector["Categoria"];
+                    aux.Id = (int)datos.Lector["Id"];
+                    aux.Descripcion = (string)datos.Lector["Descripcion"];
 
                     lista.Add(aux);
                 }
 
-                conexion.Close();
                 return lista;
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
+        // ---- Buscar Categoria por nombre
+        public List<Categorias> buscar(string nombre)
+        {
+            List<Categorias> lista = new List<Categorias>();
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.SetearConsulta($"SELECT Id, Descripcion FROM CATEGORIAS WHERE Descripcion LIKE '%{nombre}%'");
+                datos.EjecutarLectura();
+
+                while (datos.Lector.Read())
+                {
+                    Categorias aux = new Categorias();
+                    aux.Id = (int)datos.Lector["Id"];
+                    aux.Descripcion = (string)datos.Lector["Descripcion"];
+
+                    lista.Add(aux);
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
             }
         }
 
         // ---- Agregar una nueva categoria
         public void agregar(Categorias categoria)
         {
-            SqlConnection conexion = new SqlConnection();
-            SqlCommand comando = conexion.CreateCommand();
+            AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                conexion.ConnectionString = "server=.; database=CATALOGO_P3_DB; integrated security=true;";
-                comando.CommandType = System.Data.CommandType.Text;
-                comando.CommandText = "INSERT INTO CATEGORIAS (Categoria) VALUES (@nombre)";
-                comando.Parameters.AddWithValue("@nombre", categoria.Categoria);
-                comando.Connection = conexion;
-
-                conexion.Open();
-                comando.ExecuteNonQuery();
-                conexion.Close();
+                datos.SetearConsulta($"INSERT INTO CATEGORIAS (Descripcion) VALUES ('{categoria.Descripcion}')");
+                datos.EjecutarLectura();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+            finally
+            {
+                datos.CerrarConexion();
+            }
         }
 
-        // ---- Editar una categoria
+        // ---- Editar categoria
         public void editar(Categorias categoria)
         {
-            SqlConnection conexion = new SqlConnection();
-            SqlCommand comando = conexion.CreateCommand();
+            AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                conexion.ConnectionString = "server=.; database=CATALOGO_P3_DB; integrated security=true;";
-                comando.CommandType = System.Data.CommandType.Text;
-                comando.CommandText = "UPDATE CATEGORIAS SET Categoria = @nombre WHERE Id = @id";
-                comando.Parameters.AddWithValue("@nombre", categoria.Categoria);
-                comando.Parameters.AddWithValue("@id", categoria.Id);
-                comando.Connection = conexion;
-
-                conexion.Open();
-                comando.ExecuteNonQuery();
-                conexion.Close();
+                datos.SetearConsulta($"UPDATE CATEGORIAS SET Descripcion = '{categoria.Descripcion}' WHERE Id = {categoria.Id}");
+                datos.EjecutarLectura();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+            finally
+            {
+                datos.CerrarConexion();
+            }
         }
 
-        // ---- Eliminar una categoria por Id
+        // ---- Eliminar categoria
         public void eliminar(int id)
         {
-            SqlConnection conexion = new SqlConnection();
-            SqlCommand comando = conexion.CreateCommand();
+            AccesoDatos datos = new AccesoDatos();
 
             try
             {
-                conexion.ConnectionString = "server=.; database=CATALOGO_P3_DB; integrated security=true;";
-                comando.CommandType = System.Data.CommandType.Text;
-                comando.CommandText = "DELETE FROM CATEGORIAS WHERE Id = @id";
-                comando.Parameters.AddWithValue("@id", id);
-                comando.Connection = conexion;
-
-                conexion.Open();
-                comando.ExecuteNonQuery();
-                conexion.Close();
+                datos.SetearConsulta($"DELETE FROM CATEGORIAS WHERE Id = {id}");
+                datos.EjecutarLectura();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+            finally
+            {
+                datos.CerrarConexion();
+            }
         }
 
-        // ---- Obtener una categoria por Id
+        // ---- Obtener por Id
         public Categorias obtenerPorId(int id)
         {
-            SqlConnection conexion = new SqlConnection();
-            SqlCommand comando = conexion.CreateCommand();
-            SqlDataReader lector;
+            AccesoDatos datos = new AccesoDatos();
+            Categorias categoria = null;
 
             try
             {
-                conexion.ConnectionString = "server=.; database=CATALOGO_P3_DB; integrated security=true;";
-                comando.CommandType = System.Data.CommandType.Text;
-                comando.CommandText = "SELECT Id, Categoria FROM CATEGORIAS WHERE Id = @id";
-                comando.Parameters.AddWithValue("@id", id);
-                comando.Connection = conexion;
+                datos.SetearConsulta($"SELECT Id, Descripcion FROM CATEGORIAS WHERE Id = {id}");
+                datos.EjecutarLectura();
 
-                conexion.Open();
-                lector = comando.ExecuteReader();
-
-                Categorias categoria = null;
-
-                if (lector.Read())
+                if (datos.Lector.Read())
                 {
                     categoria = new Categorias();
-                    categoria.Id = lector.GetInt32(0);
-                    categoria.Categoria = (string)lector["Categoria"];
+                    categoria.Id = (int)datos.Lector["Id"];
+                    categoria.Descripcion = (string)datos.Lector["Descripcion"];
                 }
 
-                conexion.Close();
                 return categoria;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+            finally
+            {
+                datos.CerrarConexion();
+            }
         }
-
-
-
-
-
     }
 }
