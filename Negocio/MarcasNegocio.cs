@@ -13,26 +13,31 @@ namespace Negocio
         private string connectionString = "server=.; database=CATALOGO_P3_DB; integrated security=true;";
 
         // Listar todas las marcas
-        public List<Dominio.Marcas> Listar()
+        public List<Marcas> Listar()
         {
-            List<Dominio.Marcas> lista = new List<Dominio.Marcas>();
-            using (SqlConnection conexion = new SqlConnection(connectionString))
+            List<Marcas> lista = new List<Marcas>();
+            AccesoDatos datos = new AccesoDatos();
+            try
             {
-                SqlCommand comando = new SqlCommand("SELECT Id, Descripcion FROM MARCAS", conexion);
-                conexion.Open();
-                SqlDataReader lector = comando.ExecuteReader();
-
-                while (lector.Read())
+                datos.SetearConsulta("SELECT Id, Descripcion FROM MARCAS");
+                datos.EjecutarLectura();
+                while (datos.Lector.Read())
                 {
-                    Dominio.Marcas marca = new Dominio.Marcas
-                    {
-                        Id = (int)lector["Id"],
-                        Marca = (string)lector["Descripcion"]
-                    };
-                    lista.Add(marca);
+                    Marcas aux = new Marcas();
+                    aux.Id = (int)datos.Lector["Id"];
+                    aux.Marca = (string)datos.Lector["Descripcion"];
+                    lista.Add(aux);
                 }
+                return lista;
             }
-            return lista;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
         }
 
         // Buscar marcas por nombre (contiene)

@@ -28,7 +28,7 @@ namespace Negocio
 					aux.Marca = new Marcas();
 					aux.Marca.Marca = (string)datos.Lector["Marca"];
 					aux.Categoria = new Categorias();
-					aux.Categoria.Descripcion = (string)datos.Lector["Descripcion"];
+					aux.Categoria.Descripcion = (string)datos.Lector["Categoria"];
 
 					lista.Add(aux);
 				}
@@ -44,6 +44,38 @@ namespace Negocio
 				datos.CerrarConexion();
 			}
         }
+
+		public void Agregar(Articulos nuevo)
+		{
+			AccesoDatos datos = new AccesoDatos();
+
+			try
+			{
+				//datos.SetearConsulta("INSERT INTO ARTICULOS (Codigo, Nombre, Descripcion, Precio, IdMarca, IdCategoria) VALUES ('" + nuevo.Codigo+"', '"+nuevo.Nombre+"', '"+nuevo.Descripcion+"', "+nuevo.Precio+", "+nuevo.Marca.Id+", "+nuevo.Categoria.Id+")");
+				datos.SetearConsulta("INSERT INTO ARTICULOS (Codigo, Nombre, Descripcion, Precio, IdMarca, IdCategoria) VALUES (@codigo, @nombre, @descripcion, @precio, @idMarca, @idCategoria)");
+				datos.SetearParametro("@codigo", nuevo.Codigo);
+				datos.SetearParametro("@nombre", nuevo.Nombre);
+				datos.SetearParametro("@descripcion", nuevo.Descripcion);
+				datos.SetearParametro("@precio", nuevo.Precio);
+				datos.SetearParametro("@idMarca", nuevo.Marca.Id);
+				datos.SetearParametro("@idCategoria", nuevo.Categoria.Id);
+				datos.EjecutarAccion();
+			}
+			catch (Exception ex)
+			{
+
+				throw ex;
+			}
+			finally
+			{
+				datos.CerrarConexion();
+			}
+		}
+
+		public void Modificar(Articulos modificar)
+		{
+
+		}
     }
 
     }
