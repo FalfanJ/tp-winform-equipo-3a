@@ -15,8 +15,9 @@ namespace Negocio
 			AccesoDatos datos = new AccesoDatos();
 			try
 			{
-				datos.SetearConsulta("SELECT a.id, a.Codigo, a.Nombre, a.Descripcion, b.Descripcion AS 'Marca', c.Descripcion AS 'Categoria' , a.Precio FROM ARTICULOS A LEFT JOIN MARCAS B on a.IdMarca = b.Id LEFT JOIN CATEGORIAS C on a.IdCategoria = c.Id");
+				//datos.SetearConsulta("SELECT a.id, a.Codigo, a.Nombre, a.Descripcion, b.Descripcion AS 'Marca', c.Descripcion AS 'Categoria' , a.Precio FROM ARTICULOS A LEFT JOIN MARCAS B on a.IdMarca = b.Id LEFT JOIN CATEGORIAS C on a.IdCategoria = c.Id");
 				//datos.SetearConsulta("SELECT a.id, a.Codigo, a.Nombre, a.Descripcion, ISNULL(m.Descripcion, 'Marca NO encontrada') AS 'Marca', ISNULL(c.Descripcion, 'Dato NO encontrado') AS 'Categoria' , a.Precio FROM ARTICULOS A LEFT JOIN MARCAS M on a.IdMarca = m.Id LEFT JOIN CATEGORIAS C on a.IdCategoria = c.Id");
+				datos.SetearConsulta("SELECT a.id, a.Codigo, a.Nombre, a.Descripcion, b.Descripcion AS 'Marca', c.Descripcion AS 'Categoria' , a.Precio, b.Id AS 'IdMarca' , c.Id AS 'IdCategoria'  FROM ARTICULOS A LEFT JOIN MARCAS B on a.IdMarca = b.Id LEFT JOIN CATEGORIAS C on a.IdCategoria = c.Id");
 				datos.EjecutarLectura();
 				while (datos.Lector.Read())
 				{
@@ -31,11 +32,13 @@ namespace Negocio
 					{
 						aux.Marca = new Marcas();
 						aux.Marca.Marca = (string)datos.Lector["Marca"];
+						aux.Marca.Id = (int)datos.Lector["IdMarca"];
 					}
 					if (!(datos.Lector["Categoria"] is DBNull))
 					{
 						aux.Categoria = new Categorias();
 						aux.Categoria.Descripcion = (string)datos.Lector["Categoria"];
+						aux.Categoria.Id = (int)datos.Lector["IdCategoria"];
 					}
 
 					lista.Add(aux);
@@ -82,10 +85,33 @@ namespace Negocio
 
 		public void Modificar(Articulos modificar)
 		{
+            AccesoDatos datos = new AccesoDatos();
 
-		}
+			try
+			{
+				datos.SetearConsulta("UPDATE ARTICULOS set Codigo = @codigo, Nombre = @nombre, Descripcion = @descripcion, IdMarca = @idmarca, IdCategoria =  @idcategoria, Precio = @precio WHERE Id = @id");
+                datos.SetearParametro("@id", modificar.Id);
+                datos.SetearParametro("@codigo", modificar.Codigo);
+                datos.SetearParametro("@nombre", modificar.Nombre);
+                datos.SetearParametro("@descripcion", modificar.Descripcion);
+                datos.SetearParametro("@precio", modificar.Precio);
+                datos.SetearParametro("@idmarca", modificar.Marca.Id);
+                datos.SetearParametro("@idcategoria", modificar.Categoria.Id);
+                datos.EjecutarAccion();
 
-		public int IdArticulo(string codArticulo)
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+        }
+
+        public int IdArticulo(string codArticulo)
 		{
 			AccesoDatos datos = new AccesoDatos();
 

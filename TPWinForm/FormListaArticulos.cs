@@ -76,9 +76,18 @@ namespace TPWinForm
             Cargar();
         }
 
-        private void pbxArticulo_Click(object sender, EventArgs e)
+        private void btnModificar_Click(object sender, EventArgs e)
         {
+            ArticulosNegocio negocio = new ArticulosNegocio();
+            Articulos articuloSelect;
+            Imagenes imagenSelect = new Imagenes();
+            ImagenesNegocio imgNegocio = new ImagenesNegocio();
 
+            articuloSelect = (Articulos)DgwArticulos.CurrentRow.DataBoundItem;
+            imagenSelect = imgNegocio.imagen(articuloSelect.Id);
+            FormModificacionArticulo mod = new FormModificacionArticulo(articuloSelect, imagenSelect);
+            mod.ShowDialog();
+            Cargar();
         }
     }
 }

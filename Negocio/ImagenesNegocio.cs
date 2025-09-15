@@ -34,6 +34,34 @@ namespace Negocio
 			}
         }
 
+		public Imagenes imagen(int IdArticulo)
+		{
+			AccesoDatos datos = new AccesoDatos();
+			Imagenes aux = new Imagenes();
+
+			try
+			{
+				datos.SetearConsulta("SELECT IdArticulo, MIN(ImagenUrl) AS ImagenUrl FROM IMAGENES WHERE idArticulo = @idarticulo GROUP BY IdArticulo");
+				datos.SetearParametro("@idarticulo", IdArticulo);
+                datos.EjecutarLectura();
+				if (datos.Lector.Read())
+				{
+                    aux.IdArticulo = IdArticulo;
+                    aux.ImagenURL = (string)datos.Lector["ImagenUrl"];
+                }
+				return aux;
+            }
+			catch (Exception ex)
+			{
+
+				throw ex;
+			}
+			finally
+			{
+				datos.CerrarConexion();
+			}
+		}
+
 		public void Agregar(Imagenes nuevo)
 		{
 			AccesoDatos datos = new AccesoDatos();
@@ -56,5 +84,29 @@ namespace Negocio
 				datos.CerrarConexion();
 			}
 		}
+
+		public void Modificar(Imagenes modificar)
+		{
+            AccesoDatos datos = new AccesoDatos();
+
+            try
+            {
+                datos.SetearConsulta("UPDATE IMAGENES set ImagenUrl = @imagenUrl WHERE IdArticulo = @idArticulo");
+                datos.SetearParametro("@idArticulo", modificar.IdArticulo);
+                datos.SetearParametro("@imagenUrl", modificar.ImagenURL);
+                datos.EjecutarAccion();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                datos.CerrarConexion();
+            }
+
+        }
     }
 }

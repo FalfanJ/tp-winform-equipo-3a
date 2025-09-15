@@ -38,13 +38,15 @@
             // 
             // DgwArticulos
             // 
+            this.DgwArticulos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.DgwArticulos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgwArticulos.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.DgwArticulos.Location = new System.Drawing.Point(12, 12);
             this.DgwArticulos.MultiSelect = false;
             this.DgwArticulos.Name = "DgwArticulos";
             this.DgwArticulos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DgwArticulos.Size = new System.Drawing.Size(695, 269);
+            this.DgwArticulos.Size = new System.Drawing.Size(695, 279);
             this.DgwArticulos.TabIndex = 0;
             this.DgwArticulos.SelectionChanged += new System.EventHandler(this.DgwArticulos_SelectionChanged);
             // 
@@ -55,16 +57,15 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxArticulo.Location = new System.Drawing.Point(714, 13);
             this.pbxArticulo.Name = "pbxArticulo";
-            this.pbxArticulo.Size = new System.Drawing.Size(345, 268);
+            this.pbxArticulo.Size = new System.Drawing.Size(345, 278);
             this.pbxArticulo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbxArticulo.TabIndex = 1;
             this.pbxArticulo.TabStop = false;
-            this.pbxArticulo.Click += new System.EventHandler(this.pbxArticulo_Click);
             // 
             // btnAgregar
             // 
             this.btnAgregar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAgregar.Location = new System.Drawing.Point(13, 308);
+            this.btnAgregar.Location = new System.Drawing.Point(13, 297);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(75, 23);
             this.btnAgregar.TabIndex = 2;
@@ -75,25 +76,26 @@
             // btnModificar
             // 
             this.btnModificar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnModificar.Location = new System.Drawing.Point(121, 308);
+            this.btnModificar.Location = new System.Drawing.Point(122, 297);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(75, 23);
             this.btnModificar.TabIndex = 3;
             this.btnModificar.Text = "Modificar";
             this.btnModificar.UseVisualStyleBackColor = true;
+            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
             // FormListaArticulos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1071, 343);
+            this.ClientSize = new System.Drawing.Size(1071, 332);
             this.Controls.Add(this.btnModificar);
             this.Controls.Add(this.btnAgregar);
             this.Controls.Add(this.pbxArticulo);
             this.Controls.Add(this.DgwArticulos);
             this.Name = "FormListaArticulos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FormListaArticulos";
+            this.Text = "Lista de Articulos";
             this.Load += new System.EventHandler(this.FormListaArticulos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DgwArticulos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxArticulo)).EndInit();

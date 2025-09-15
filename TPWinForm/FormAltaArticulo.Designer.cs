@@ -250,7 +250,7 @@
             this.MinimizeBox = false;
             this.Name = "FormAltaArticulo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FormAltaArticulo";
+            this.Text = "Agregar Articulo";
             this.Load += new System.EventHandler(this.FormAltaArticulo_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbxArticuloAlta)).EndInit();
             this.ResumeLayout(false);
