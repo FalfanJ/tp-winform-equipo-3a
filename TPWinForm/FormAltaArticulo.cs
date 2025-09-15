@@ -12,9 +12,9 @@ using System.Windows.Forms;
 
 namespace TPWinForm
 {
-    public partial class FrmAltaArticulo : Form
+    public partial class FormAltaArticulo : Form
     {
-        public FrmAltaArticulo()
+        public FormAltaArticulo()
         {
             InitializeComponent();
         }
@@ -57,7 +57,7 @@ namespace TPWinForm
 
             try
             {
-                cboCategoria.DataSource = catNegocio.Listar();
+                cboCategoria.DataSource = catNegocio.listar();
                 cboMarca.DataSource = marNegocio.Listar();
             }
             catch (Exception ex)

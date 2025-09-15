@@ -12,11 +12,11 @@ using System.Windows.Forms;
 
 namespace TPWinForm
 {
-    public partial class FrmListaArticulos : Form
+    public partial class FormListaArticulos : Form
     {
         private List<Articulos> listaArticulo;
         private List<Imagenes> listaImagenes;
-        public FrmListaArticulos()
+        public FormListaArticulos()
         {
             InitializeComponent();
         }

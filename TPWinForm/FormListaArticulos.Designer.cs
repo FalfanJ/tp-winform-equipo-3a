@@ -1,6 +1,6 @@
 ﻿namespace TPWinForm
 {
-    partial class FrmListaArticulos
+    partial class FormListaArticulos
     {
         /// <summary>
         /// Required designer variable.
@@ -52,14 +52,14 @@
             this.pbxArticulo.TabIndex = 1;
             this.pbxArticulo.TabStop = false;
             // 
-            // FrmListaArticulos
+            // FormListaArticulos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1071, 293);
             this.Controls.Add(this.pbxArticulo);
             this.Controls.Add(this.DgwArticulos);
-            this.Name = "FrmListaArticulos";
+            this.Name = "FormListaArticulos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormListaArticulos";
             this.Load += new System.EventHandler(this.FormListaArticulos_Load);

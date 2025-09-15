@@ -1,6 +1,6 @@
 ﻿namespace TPWinForm
 {
-    partial class FrmAltaArticulo
+    partial class FormAltaArticulo
     {
         /// <summary>
         /// Required designer variable.
@@ -188,7 +188,7 @@
             this.label8.TabIndex = 15;
             this.label8.Text = "Categoria:";
             // 
-            // FrmAltaArticulo
+            // FormAltaArticulo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -210,7 +210,7 @@
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FrmAltaArticulo";
+            this.Name = "FormAltaArticulo";
             this.Text = "FormAltaArticulo";
             this.Load += new System.EventHandler(this.FormAltaArticulo_Load);
             this.ResumeLayout(false);
