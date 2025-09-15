@@ -16,7 +16,7 @@ namespace TPWinForm
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormAltaArticulo());
+            Application.Run(new Form1());
         }
     }
 }
