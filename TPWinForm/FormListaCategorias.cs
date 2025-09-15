@@ -103,5 +103,13 @@ namespace TPWinForm
                 txtEditar.Text = dgvCategorias.CurrentRow.Cells["Descripcion"].Value.ToString();
             }
         }
+
+        // ---- Evento resetear busqueda
+ 
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            txtBuscar.Clear();
+            CargarCategorias();
+        }
     }
 }
