@@ -28,6 +28,8 @@ namespace TPWinForm
         {
             Articulos nuevo = new Articulos();
             ArticulosNegocio negocio = new ArticulosNegocio();
+            Imagenes imagenNuevo = new Imagenes();
+            ImagenesNegocio negocioImagen = new ImagenesNegocio();
 
             try
             {
@@ -39,6 +41,13 @@ namespace TPWinForm
                 nuevo.Marca = (Marcas)cboMarca.SelectedItem;
 
                 negocio.Agregar(nuevo);
+                if (!(string.IsNullOrEmpty(txtUrlImagen.Text)))
+                {
+                    imagenNuevo.ImagenURL = txtUrlImagen.Text;
+                    imagenNuevo.IdArticulo = negocio.IdArticulo(nuevo.Codigo);
+                    negocioImagen.Agregar(imagenNuevo);
+
+                }
                 MessageBox.Show("Articulo agregado");
                 Close();
 
@@ -64,6 +73,24 @@ namespace TPWinForm
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void txtUrlImagen_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                pbxArticuloAlta.Load(txtUrlImagen.Text.ToString());
+            }
+            catch (Exception)
+            {
+
+                pbxArticuloAlta.Image = Properties.Resources.Image_not_found;
+            }
+        }
+
+        private void txtDescripcion_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

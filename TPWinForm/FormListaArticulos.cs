@@ -23,12 +23,26 @@ namespace TPWinForm
 
         private void FormListaArticulos_Load(object sender, EventArgs e)
         {
+            Cargar();
+        }
+
+        private void Cargar()
+        {
             ArticulosNegocio negocio = new ArticulosNegocio();
             ImagenesNegocio negocioImag = new ImagenesNegocio();
-            listaArticulo = negocio.Listar();
-            listaImagenes = negocioImag.ListarXArticulo();
-            DgwArticulos.DataSource = listaArticulo;
-            pbxArticulo.Load(listaImagenes[0].ImagenURL);
+            try
+            {
+                listaArticulo = negocio.Listar();
+                listaImagenes = negocioImag.ListarXArticulo();
+                DgwArticulos.DataSource = listaArticulo;
+                DgwArticulos.Columns["Id"].Visible = false;
+                pbxArticulo.Load(listaImagenes[0].ImagenURL);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                throw ex;
+            }
         }
 
         private void DgwArticulos_SelectionChanged(object sender, EventArgs e)
@@ -53,6 +67,18 @@ namespace TPWinForm
                 pbxArticulo.Image = Properties.Resources.Image_not_found;
              
             }
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            FormAltaArticulo alta = new FormAltaArticulo();
+            alta.ShowDialog();
+            Cargar();
+        }
+
+        private void pbxArticulo_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

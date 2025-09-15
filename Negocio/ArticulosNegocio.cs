@@ -15,7 +15,8 @@ namespace Negocio
 			AccesoDatos datos = new AccesoDatos();
 			try
 			{
-				datos.SetearConsulta("SELECT a.id, a.Codigo, a.Nombre, a.Descripcion, b.Descripcion AS 'Marca', ISNULL(c.Descripcion, 'Dato no encontrado') AS 'Categoria' , a.Precio FROM ARTICULOS A LEFT JOIN MARCAS B on a.IdMarca = b.Id LEFT JOIN CATEGORIAS C on a.IdCategoria = c.Id");
+				datos.SetearConsulta("SELECT a.id, a.Codigo, a.Nombre, a.Descripcion, b.Descripcion AS 'Marca', c.Descripcion AS 'Categoria' , a.Precio FROM ARTICULOS A LEFT JOIN MARCAS B on a.IdMarca = b.Id LEFT JOIN CATEGORIAS C on a.IdCategoria = c.Id");
+				//datos.SetearConsulta("SELECT a.id, a.Codigo, a.Nombre, a.Descripcion, ISNULL(m.Descripcion, 'Marca NO encontrada') AS 'Marca', ISNULL(c.Descripcion, 'Dato NO encontrado') AS 'Categoria' , a.Precio FROM ARTICULOS A LEFT JOIN MARCAS M on a.IdMarca = m.Id LEFT JOIN CATEGORIAS C on a.IdCategoria = c.Id");
 				datos.EjecutarLectura();
 				while (datos.Lector.Read())
 				{
@@ -25,10 +26,17 @@ namespace Negocio
 					aux.Nombre = (string)datos.Lector["Nombre"];
 					aux.Descripcion = (string)datos.Lector["Descripcion"];
 					aux.Precio = (decimal)datos.Lector["Precio"];
-					aux.Marca = new Marcas();
-					aux.Marca.Marca = (string)datos.Lector["Marca"];
-					aux.Categoria = new Categorias();
-					aux.Categoria.Descripcion = (string)datos.Lector["Categoria"];
+
+					if (!(datos.Lector["Marca"] is DBNull))
+					{
+						aux.Marca = new Marcas();
+						aux.Marca.Marca = (string)datos.Lector["Marca"];
+					}
+					if (!(datos.Lector["Categoria"] is DBNull))
+					{
+						aux.Categoria = new Categorias();
+						aux.Categoria.Descripcion = (string)datos.Lector["Categoria"];
+					}
 
 					lista.Add(aux);
 				}
@@ -75,6 +83,30 @@ namespace Negocio
 		public void Modificar(Articulos modificar)
 		{
 
+		}
+
+		public int IdArticulo(string codArticulo)
+		{
+			AccesoDatos datos = new AccesoDatos();
+
+			try
+			{
+				datos.SetearConsulta("SELECT Id from ARTICULOS WHERE Codigo = @codigo");
+				datos.SetearParametro("@codigo", codArticulo);
+				datos.EjecutarLectura();
+				datos.Lector.Read();
+				return (int)datos.Lector["Id"]; ;
+
+			}
+			catch (Exception ex)
+			{
+
+				throw ex;
+			}
+			finally
+			{
+				datos.CerrarConexion();
+			}
 		}
     }
 
